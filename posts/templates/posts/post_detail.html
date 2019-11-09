@@ -1,0 +1,13 @@
+{% extends "posts/post_base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+post detail
+{% endblock %}
+
+{% block post_content%}
+<div class="col-md-8">
+{% include "posts/_single_post.html" %}
+</div>
+<img src="{{ post.img.url }}" alt="" height="50px" width="200px">
+{% endblock post_content %}

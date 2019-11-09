@@ -1,0 +1,66 @@
+{% extends "group/group_base.html" %}
+
+{% block title %}
+List of groups
+{% endblock title %}
+
+{% block pregroup %}
+<div class="col-md-4">
+    <div class="content">
+    {% if user.is_authenticated %}
+    <h2>welcome <a href="{% url 'posts:for_user' username=user.username %}" >@{{user.username}}</a></h2>
+    {% endif %}
+    <p>Welcome to the groups page! Select a Group with a shared interest!</p>
+</div>
+
+    {% if user.is_authenticated %}
+    <a href="{% url 'group:create' %}" class="btn btn-lg btn-warning text-light"><i class="fa fa-plus"></i> Create New Group</a>
+    {% endif %}
+</div>
+{% endblock pregroup %}
+
+{% block group_content %}
+<div class="col-md-8">
+    <h2 class="text-center bg-secondary text-light py-2">Groups</h2>
+    {% if group_list.count == 0 %}
+    <h3>No groups</h3>
+    {% endif %}
+<ul class="list-group">
+{% for group in group_list %}
+  <li class="list-group-item" aria-disabled="true">
+    <a href="{% url 'group:single' slug=group.slug %}"><h3 class='title'>{{group.name}}</h3></a>
+        <div class="container-fluid">
+            {{group.description|safe}}
+        </div>
+    </li>
+  <li class="list-group-item">
+    <div class="row">
+        <div class="col-md-4">
+            <span class="badge">{{group.member.count}}</span>member{{group.members.count|pluralize}}
+        </div>
+         <div class="col-md-4">
+            <span class="badge">{{group.posts.count}}</span>post{{group.posts.count|pluralize}}
+        </div>
+    </div>
+  </li>
+  <br>
+{% endfor %}
+</ul>
+</div>
+{% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/group?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/group?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+{% endblock group_content %}
+

@@ -1,0 +1,15 @@
+<blockquote class="blockquote">
+<p class="mb-0">{{ post.message }}</p>
+<a href="{% url 'posts:post_detail' pk=post.pk slug=post.group.slug %}">Go to post</a>
+<footer class="blockquote-footer">Created by: <a href="#">@{{ post.user.username }}</a> at <cite title="Source Title"><a href="#">{{ post.created_at }}</a></cite>
+    {% if post.group %}
+in <a href="#">{{ post.group.name }}</a>
+{% endif %}</footer>
+</blockquote>
+
+<div class="media-footer">
+{% if user.is_authenticated and post.user == user and not hide_delete %}
+    <a href="{% url 'posts:delete' pk=post.pk %}" title="delete" class="btn btn-simple text-danger">
+    <i class="fa fa-times" aria-hidden="true"></i>Delete</a>
+{% endif %}
+</div>
